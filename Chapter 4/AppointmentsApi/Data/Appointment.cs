@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace AppointmentsApi.Models;
+namespace AppointmentsApi.Data;
 
 [Owned]
 public record TimeSlot(DateTime Start, DateTime End);
