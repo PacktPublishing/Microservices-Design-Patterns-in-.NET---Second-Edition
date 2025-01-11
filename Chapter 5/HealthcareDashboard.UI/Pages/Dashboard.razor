@@ -1,0 +1,75 @@
+﻿@page "/dashboard/{PatientId:Guid}"
+@using HealthcareDashboard.UI.Models
+@using HealthcareDashboard.UI.Services
+@inject AggregatorServiceClient AggregatorService
+
+<h3>Patient Dashboard</h3>
+
+@if (isLoading)
+{
+    <p>Loading data...</p>
+}
+else if(patientProfile is null)
+{
+    <p>No data found for the patient</p>
+}
+else 
+{
+    <div>
+        <h4>Patient Full Name</h4>
+        <p>@patientProfile?.Patient?.Fullname</p>
+        <h4>Patient Profile</h4>
+        <p><strong>Gender:</strong> @patientProfile?.Patient?.Gender</p>
+        <p><strong>Email:</strong> @patientProfile?.Patient?.Email</p>
+        <p><strong>Contact:</strong> @patientProfile?.Patient?.ContactNumber</p>
+
+        <h4>Medical History</h4>
+        <ul>
+            @foreach (var record in patientProfile?.MedicalHistory)
+            {
+                <li>@record.Diagnosis (Date: @record.RecordDate.ToShortDateString())</li>
+            }
+        </ul>
+
+        <h4>Appointments</h4>
+        <ul>
+            @foreach (var appointment in patientProfile?.Appointments)
+            {
+                <li>@appointment.AppointmentDate.ToShortDateString() with @appointment.Doctor</li>
+            }
+        </ul>
+
+        <h4>Billing</h4>
+        <ul>
+            @foreach (var bill in patientProfile?.BillingDetails)
+            {
+                <li>Amount: @bill.Amount on @bill.BillingDate.ToShortDateString()</li>
+            }
+        </ul> 
+    </div>
+}
+@code {
+    [Parameter]
+    public Guid PatientId { get; set; }
+
+    private PatientDashboardModel? patientProfile = new PatientDashboardModel();
+    private bool isLoading = true;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            isLoading = true;
+            patientProfile = await AggregatorService.GetPatientDashboardAsync(PatientId);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
