@@ -15,18 +15,8 @@ namespace AppointmentsApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentsController : ControllerBase
+    public class AppointmentsController(AppointmentContext _context, PatientsApiClient _patientsApiClient, DoctorsApiClient _doctorsApiClient, IConfiguration _configuration) : ControllerBase
     {
-        private readonly AppointmentContext _context;
-        private readonly PatientsApiClient _patientsApiClient;
-        private readonly DoctorsApiClient _doctorsApiClient;
-
-        public AppointmentsController(AppointmentContext context, PatientsApiClient patientsApiClient, DoctorsApiClient doctorsApiClient)
-        {
-            _context = context;
-            _patientsApiClient = patientsApiClient;
-            _doctorsApiClient = doctorsApiClient;
-        }
 
         // GET: api/Appointments
         [HttpGet]
@@ -51,7 +41,7 @@ namespace AppointmentsApi.Controllers
             var doctor = await _doctorsApiClient.GetDoctorAsync(id);
 
             // Use GRPC service to retrieve document information on patient
-            using var channel = GrpcChannel.ForAddress("http://localhost:5170");
+            using var channel = GrpcChannel.ForAddress(_configuration["GrpcEndpoints:DocumentService"]);
             var client = new DocumentService.DocumentServiceClient(channel);
             var documents = await client.GetAllAsync(new PatientId{ Id = patient.PatientId.ToString()});
 
