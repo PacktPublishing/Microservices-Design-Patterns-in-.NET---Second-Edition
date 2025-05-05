@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  web-bff:
+    image: healthcare/ocelotgw:latest
+    build:
+      context: ./Chapter 11/Gateway.Ocelot
+    container_name: web-bff
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production  # or Development
+    ports:
+      - "8080:80"                          # expose Web BFF
+    volumes:
+      - ./Chapter 11/Gateway.Ocelot/ocelot.WebPortal.json:/app/ocelot.json
+
+  mobile-bff:
+    image: healthcare/ocelotgw:latest
+    build:
+      context: ./Chapter 11/Gateway.Ocelot
+    container_name: mobile-bff
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8081:80"                          # expose Mobile BFF
+    volumes:
+      - ./Chapter 11/Gateway.Ocelot/ocelot.MobilePortal.json:/app/ocelot.json
+
+  appointments-svc:
+    image: appointments-api:latest
+    # … your existing service definition
+
+  patients-svc:
+    image: patients-api:latest
+    # …
+
+  doctors-svc:
+    image: doctors-api:latest
+    # …
