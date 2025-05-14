@@ -8,6 +8,9 @@ public class PaymentProcessedConsumer(AppointmentContext _dbContext) : IConsumer
     public async Task Consume(ConsumeContext<PaymentProcessed> context)
     {
         var message = context.Message;
+        Console.WriteLine(
+            $"[Appointment] CorrelationId={message.CorrelationId}: Payment " +
+            $"{(message.Success ? "succeeded" : "failed")} for Appointment {message.AppointmentId}");
 
         if (!message.Success)
         {

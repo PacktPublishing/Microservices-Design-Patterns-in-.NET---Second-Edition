@@ -74,8 +74,10 @@ public class AppointmentsController(AppointmentContext _context, IMediator _medi
     public async Task<ActionResult<Appointment>> PostAppointment(CreateAppointmentCommand createAppointmentCommand)
     {
         var appointment = await _mediator.Send(createAppointmentCommand);
+        var correlationId = Guid.NewGuid();
 
         await _mediator.Publish(new AppointmentCreatedEvent{
+            CorrelationId = correlationId,
             AppointmentId = appointment.AppointmentId,
             AppointmentDate = appointment.Slot.Start,
             PatientId = appointment.PatientId,

@@ -5,6 +5,7 @@ namespace AppointmentsApi.Models.Events;
 
 public class AppointmentCreatedEvent : INotification
 {
+    public Guid CorrelationId { get; set; }
     public Guid AppointmentId { get; set; }
     public DateTime AppointmentDate { get; set; }
     public Guid PatientId { get; set; }
