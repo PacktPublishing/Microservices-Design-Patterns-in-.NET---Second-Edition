@@ -1,57 +1,79 @@
 {
   "Routes": [
-    {
-      "Key": "appointmentsRoute",
-      "DownstreamPathTemplate": "/api/appointments/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7206
-        } 
-      ],
-      "UpstreamPathTemplate": "/appointments/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
-    },
-    {
-      "Key": "patientsRoute",
-      "DownstreamPathTemplate": "/api/patients/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "patients-svc",
-          "Port": 443
+      {
+        "Key": "limitedPatientsRoute",
+        "DownstreamPathTemplate": "/api/v1/patients/{everything}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "patients-svc",
+            "Port": 443
+          }
+        ],
+        "UpstreamPathTemplate": "/patients/{everything}",
+        "UpstreamHttpMethod": [ "GET" ],
+        "RateLimitOptions": {
+          "EnableRateLimiting": true,
+          "Period": "10s",
+          "Limit": 5
         }
-      ],
-      "UpstreamPathTemplate": "/patients/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
-    },
-    {
-      "Key": "documentsRoute",
-      "DownstreamPathTemplate": "/api/documents/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "documents-svc",
-          "Port": 443
+      },
+      {
+        "Key": "appointmentsRoute",
+        "DownstreamPathTemplate": "/api/v1/appointments/{everything}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 7206
+          }
+        ],
+        "UpstreamPathTemplate": "/appointments/{everything}",
+        "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "Bearer",
+          "AllowedScopes": [ "appointments.read", "appointments.write" ]
         }
-      ],
-      "UpstreamPathTemplate": "/documents/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
-    },
-    {
-      "Key": "doctorsRoute",
-      "DownstreamPathTemplate": "/api/doctors/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "doctors-svc",
-          "Port": 443
-        }
-      ],
-      "UpstreamPathTemplate": "/doctors/{everything}",
-      "UpstreamHttpMethod": [ "GET" ]
-    }
+      },
+      {
+        "Key": "patientsRoute",
+        "DownstreamPathTemplate": "/api/patients/{everything}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "patients-svc",
+            "Port": 443
+          }
+        ],
+        "UpstreamPathTemplate": "/patients/{everything}",
+        "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      },
+      {
+        "Key": "documentsRoute",
+        "DownstreamPathTemplate": "/api/documents/{everything}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "documents-svc",
+            "Port": 443
+          }
+        ],
+        "UpstreamPathTemplate": "/documents/{everything}",
+        "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
+      },
+      {
+        "Key": "doctorsRoute",
+        "DownstreamPathTemplate": "/api/doctors/{everything}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "doctors-svc",
+            "Port": 443
+          }
+        ],
+        "UpstreamPathTemplate": "/doctors/{everything}",
+        "UpstreamHttpMethod": [ "GET" ]
+      }
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://gateway.microservices-health.com",
