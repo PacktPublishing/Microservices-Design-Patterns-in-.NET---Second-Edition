@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using System.Reflection
+@inject LazyAssemblyLoader LazyAssemblyLoader
+
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="assemblies" OnNavigateAsync="NavigateAsync">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    private List<Assembly> assemblies = new();
+
+    private async Task NavigateAsync(NavigationContext context)
+    {
+        if (context.Path.StartsWith("appointments"))
+        {
+            var assemblyName = context.Path.Substring(6);
+            var assembly = await LazyAssemblyLoader.LoadAssembliesAsync(
+                new string[] { "HealthPortal.Contracts.wasm" });
+            if (assembly != null)
+            {
+                assemblies.AddRange(assembly);
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+﻿@page "/login"
+@inject UserSessionState Session
+<h3>Login</h3>
+<input @bind="username" placeholder="Username" />
+<input @bind="role" placeholder="role"/>
+<button @onclick="LogIn">Log In</button>
+
+@code {
+    private string username = string.Empty;
+    private string role = string.Empty;
+
+    private void LogIn()
+    {
+        Session.SetUser(username, role);
+    }
+}
