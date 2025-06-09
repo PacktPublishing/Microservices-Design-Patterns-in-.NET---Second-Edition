@@ -1,0 +1,44 @@
+# Retrieve all appointments
+GET http://localhost:5107/api/appointments
+Accept: application/json
+
+###
+
+# Create a new appointment
+POST http://localhost:5107/api/appointments
+Content-Type: application/json
+
+{
+  "patientId": "987e6543-e21b-34d3-c456-426614174111",
+  "doctorId": "654e3210-e54b-56d3-d456-426614174222",
+  "slot": {
+    "start": "2024-12-01T10:00:00",
+    "end": "2024-12-01T11:00:00"
+  },
+  "location": {
+    "roomNumber": "101",
+    "building": "Main"
+  },
+  "purpose": "General Consultation"
+}
+
+###
+
+# Login to the system
+POST http://localhost:5107/login
+Content-Type: application/json
+{
+  "email": "test@email.com",
+  "password": "P@ssword123"
+}
+
+###
+
+# Register 
+POST http://localhost:5107/register
+Content-Type: application/json
+{
+  "username": "test@email.com",
+  "email": "test@email.com",
+  "password": "P@ssword123"
+}

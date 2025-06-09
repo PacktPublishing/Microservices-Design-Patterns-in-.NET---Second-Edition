@@ -1,0 +1,41 @@
+﻿@page "/appointments/old"
+@inject IHttpClientFactory ClientFactory
+@using HealthPortal.Contracts.Models
+@using System.Net.Http.Json
+
+<h3>Appointments</h3>
+
+@if (appointments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Date</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var appt in appointments)
+            {
+                <tr>
+                    <td>@appt.Id</td>
+                    <td>@appt.Date.ToShortDateString()</td>
+                    <td>@appt.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Appointment>? appointments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // var client = ClientFactory.CreateClient("AppointmentsAPI");
+        // appointments = await client.GetFromJsonAsync<List<Appointment>>(string.Empty);
+        var client = ClientFactory.CreateClient("Gateway");
+        appointments = await client.GetFromJsonAsync<List<Appointment>>("/appointments");
+    }
+}
