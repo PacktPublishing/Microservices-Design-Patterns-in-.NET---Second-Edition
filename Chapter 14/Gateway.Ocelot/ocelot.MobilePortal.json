@@ -1,0 +1,83 @@
+{
+  "Routes": [
+    {
+      "Key": "mobileAppointmentsRoute",
+      "DownstreamPathTemplate": "/api/appointments/{appointmentId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7206
+        }
+      ],
+      "UpstreamPathTemplate": "/mobile/appointments/{appointmentId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "Limit": 5
+      }
+    },
+    {
+      "Key": "mobilePatientsRoute",
+      "DownstreamPathTemplate": "/api/patients/{patientId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7207
+        }
+      ],
+      "UpstreamPathTemplate": "/mobile/patients/{patientId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "Key": "mobileDoctorsRoute",
+      "DownstreamPathTemplate": "/api/doctors/{doctorId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7208
+        }
+      ],
+      "UpstreamPathTemplate": "/mobile/doctors/{doctorId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "Key": "mobileAppointmentSummary",
+      "UpstreamPathTemplate": "/mobile/appointments/{appointmentId}/summary",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Aggregator": "AppointmentMobileSummaryAggregator",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "Limit": 5
+      },
+      "TimeoutOptions": {
+        "TimeoutValue": 5000
+      }
+    }
+  ],
+
+  "Aggregates": [
+    {
+      "Aggregator": "AppointmentMobileSummaryAggregator",
+      "RouteKeys": [
+        "mobileAppointmentsRoute",
+        "mobilePatientsRoute",
+        "mobileDoctorsRoute"
+      ]
+    }
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://gateway.mobile.contoso-health.com",
+    "RequestIdKey": "x-correlation-id",
+    "RateLimitOptions": {
+      "EnableRateLimiting": true,
+      "Period": "1s",
+      "Limit": 5
+    }
+  }
+}

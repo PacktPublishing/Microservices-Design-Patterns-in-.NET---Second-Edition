@@ -1,0 +1,76 @@
+{
+  "Routes": [
+    {
+      "Key": "webAppointmentsRoute",
+      "DownstreamPathTemplate": "/api/appointments/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7206
+        }
+      ],
+      "UpstreamPathTemplate": "/web/appointments/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "CorsPolicyName": "WebCorsPolicy"
+    },
+    {
+      "Key": "webPatientsRoute",
+      "DownstreamPathTemplate": "/api/patients/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7207
+        }
+      ],
+      "UpstreamPathTemplate": "/web/patients/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "CorsPolicyName": "WebCorsPolicy"
+    },
+    {
+      "Key": "webDoctorsRoute",
+      "DownstreamPathTemplate": "/api/doctors/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7208
+        }
+      ],
+      "UpstreamPathTemplate": "/web/doctors/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "CorsPolicyName": "WebCorsPolicy"
+    },
+    {
+      "Key": "webAppointmentSummary",
+      "UpstreamPathTemplate": "/web/portal/appointments/{appointmentId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Aggregator": "AppointmentSummaryAggregator",
+      "SwaggerKey": "webPortal"
+    }
+  ],
+
+  "Aggregates": [
+    {
+      "Aggregator": "AppointmentSummaryAggregator",
+      "RouteKeys": [
+        "webAppointmentsRoute",
+        "webPatientsRoute",
+        "webDoctorsRoute"
+      ]
+    }
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://gateway.web.contoso-health.com",
+    "RequestIdKey": "x-correlation-id",
+    "Cors": {
+      "WebCorsPolicy": {
+        "Origins": [ "https://web.contoso-health.com" ],
+        "Headers": [ "*" ],
+        "Methods": [ "GET", "POST", "PUT", "DELETE" ]
+      }
+    }
+  }
+}

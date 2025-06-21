@@ -1,0 +1,27 @@
+services:
+  appointmentsapi:
+    image: ${DOCKER_REGISTRY-}appointmentsapi
+    build:
+      context: AppointmentsApi
+      dockerfile: Dockerfile
+
+  documentsservice:
+    image: ${DOCKER_REGISTRY-}documentsservice
+    build:
+      context: .
+      dockerfile: DocumentsService/Dockerfile
+
+
+  gateway.ocelot:
+    image: ${DOCKER_REGISTRY-}gatewayocelot
+    build:
+      context: .
+      dockerfile: Gateway.Ocelot/Dockerfile
+
+
+  gateway.yarp:
+    image: ${DOCKER_REGISTRY-}gatewayyarp
+    build:
+      context: .
+      dockerfile: Gateway.Yarp/Dockerfile
+

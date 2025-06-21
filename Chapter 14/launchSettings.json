@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "appointmentsapi": "StartDebugging",
+        "documentsservice": "StartDebugging",
+        "gateway.ocelot": "StartDebugging",
+        "gateway.yarp": "StartDebugging"
+      }
+    }
+  }
+}
