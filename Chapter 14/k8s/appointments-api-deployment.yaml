@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointments-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointments-api
+  template:
+    metadata:
+      labels:
+        app: appointments-api
+    spec:
+      containers:
+      - name: appointments-api
+        image: appointments-api:1.0
+        ports:
+        - containerPort: 8080

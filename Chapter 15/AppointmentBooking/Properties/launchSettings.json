@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "AppointmentBooking": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7007",
+      "launchBrowser": false
+    }
+  }
+}
