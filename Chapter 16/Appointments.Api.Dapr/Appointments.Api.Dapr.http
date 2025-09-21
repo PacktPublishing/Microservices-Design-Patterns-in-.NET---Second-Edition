@@ -1,0 +1,6 @@
+@Appointments.Api.Dapr_HostAddress = http://localhost:5239
+
+GET {{Appointments.Api.Dapr_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

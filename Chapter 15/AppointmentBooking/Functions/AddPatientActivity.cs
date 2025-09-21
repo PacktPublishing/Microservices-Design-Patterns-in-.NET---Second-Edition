@@ -1,5 +1,4 @@
 using Azure.Data.Tables;
-using Castle.Core.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 

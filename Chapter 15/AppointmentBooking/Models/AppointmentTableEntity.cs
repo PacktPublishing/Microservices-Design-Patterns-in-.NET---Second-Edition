@@ -4,7 +4,7 @@ using Azure.Data.Tables;
 
 public class AppointmentTableEntity : ITableEntity
 {
-    public string PartitionKey { get; set; }
+    public string PartitionKey { get; set; } = default!;
     public string RowKey { get; set; } = Guid.NewGuid().ToString("N");
     public string PatientEmail { get; set; } = default!;
     public DateTime StartsAtUtc { get; set; }

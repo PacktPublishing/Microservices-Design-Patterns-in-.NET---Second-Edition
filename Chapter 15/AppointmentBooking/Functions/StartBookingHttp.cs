@@ -36,6 +36,11 @@ public class StartBookingHttp
             return await BadRequest(req, "Malformed JSON.");
         }
 
+        if (payload == null)
+        {
+            return await BadRequest(req, "Invalid request payload.");
+        }
+
         if (string.IsNullOrWhiteSpace(payload.Patient.FirstName)) isValid = false;
         if (string.IsNullOrWhiteSpace(payload.Patient.LastName))  isValid = false;
         if (!isValid) return await BadRequest(req, $"Validation failed");

@@ -54,7 +54,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services
     .AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<AppointmentContext>(); 
+    .AddEntityFrameworkStores<AppointmentContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -62,10 +62,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         // base-address of your identityserver
         options.Authority = "https://localhost:5001/";
 
-        // audience is optional, make sure you read the following paragraphs
-        // to understand your options
-        options.TokenValidationParameters.ValidateAudience = false;
-
+        // Suggestion: Use a unique audience value that matches your API resource name as registered in your IdentityServer.
+        // For this project, a suitable value would be:
+        options.Audience = "appointments_api";
+        options.TokenValidationParameters.ValidateAudience = true;
         // it's recommended to check the type header to avoid "JWT confusion" attacks
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
