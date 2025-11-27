@@ -5,7 +5,10 @@ using MassTransit;
 
 namespace Notification.Service;
 
-public class AppointmentCreatedConsumer(IEmailService _emailService, PatientsApiClient patientsApiClient, DoctorsApiClient doctorsApiClient) : IConsumer<AppointmentCreated>
+public class AppointmentCreatedConsumer(
+    IEmailService emailService, 
+    PatientsApiClient patientsApiClient, 
+    DoctorsApiClient doctorsApiClient) : IConsumer<AppointmentCreated>
 {
     // Dictionary to track the last processed timestamp for each appointment
     private static readonly ConcurrentDictionary<Guid, DateTime> LastProcessedTimestamps = new();
