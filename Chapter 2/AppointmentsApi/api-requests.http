@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:5107
+@appointmentId = 123e4567-e89b-12d3-a456-426614174000
+
+### Retrieve all appointments
+GET {{baseUrl}}/api/appointments
+Accept: application/json
+
+###
+
+### Retrieve a specific appointment
+GET {{baseUrl}}/api/appointments/{{appointmentId}}
+Accept: application/json
+
+###
+
+### Create a new appointment
+POST {{baseUrl}}/api/appointments
+Content-Type: application/json
+
+{
+  "patientId": "987e6543-e21b-34d3-c456-426614174111",
+  "doctorId": "654e3210-e54b-56d3-d456-426614174222",
+  "startTime": "2025-12-15T10:00:00",
+  "endTime": "2025-12-15T11:00:00",
+  "roomNumber": "101",
+  "building": "Main Building",
+  "purpose": "General Consultation"
+}
+
+###
+
+### Reschedule an appointment
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}/reschedule
+Content-Type: application/json
+
+{
+  "newStartTime": "2025-12-16T14:00:00",
+  "newEndTime": "2025-12-16T15:00:00"
+}
+
+###
+
+### Confirm an appointment
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}/confirm
+
+###
+
+### Cancel an appointment
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}/cancel
+
+###
+
+### Complete an appointment
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}/complete
+
+###
+
+### Delete an appointment
+DELETE {{baseUrl}}/api/appointments/{{appointmentId}}
