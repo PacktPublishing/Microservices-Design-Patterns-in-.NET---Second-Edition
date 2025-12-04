@@ -73,7 +73,9 @@ namespace AppointmentsApi.Controllers
             {
                 var timeSlot = new TimeSlot(request.StartTime, request.EndTime);
                 var location = new Location(request.RoomNumber, request.Building);
+                var appointmentId = Guid.NewGuid();
                 var appointment = new Appointment(
+                    appointmentId,
                     request.PatientId,
                     request.DoctorId,
                     timeSlot,
@@ -109,15 +111,15 @@ namespace AppointmentsApi.Controllers
                 await _context.SaveChangesAsync();
                 return NoContent();
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // PUT: api/Appointments/5/confirm
-        [HttpPut("{id}/confirm")]
-        public async Task<IActionResult> ConfirmAppointment(Guid id)
+        // PUT: api/Appointments/5/change-purpose
+        [HttpPut("{id}/change-purpose")]
+        public async Task<IActionResult> ChangePurpose(Guid id, ChangePurposeRequest request)
         {
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
@@ -125,60 +127,9 @@ namespace AppointmentsApi.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                appointment.Confirm();
-                await _context.SaveChangesAsync();
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        // PUT: api/Appointments/5/cancel
-        [HttpPut("{id}/cancel")]
-        public async Task<IActionResult> CancelAppointment(Guid id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                appointment.Cancel();
-                await _context.SaveChangesAsync();
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        // PUT: api/Appointments/5/complete
-        [HttpPut("{id}/complete")]
-        public async Task<IActionResult> CompleteAppointment(Guid id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                appointment.Complete();
-                await _context.SaveChangesAsync();
-                return NoContent();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            appointment.ChangePurpose(request.NewPurpose);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         // DELETE: api/Appointments/5
@@ -217,5 +168,9 @@ namespace AppointmentsApi.Controllers
     public record RescheduleRequest(
         DateTime NewStartTime,
         DateTime NewEndTime
+    );
+
+    public record ChangePurposeRequest(
+        string NewPurpose
     );
 }

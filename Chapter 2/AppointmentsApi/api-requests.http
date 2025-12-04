@@ -40,18 +40,13 @@ Content-Type: application/json
 
 ###
 
-### Confirm an appointment
-PUT {{baseUrl}}/api/appointments/{{appointmentId}}/confirm
+### Change appointment purpose
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}/change-purpose
+Content-Type: application/json
 
-###
-
-### Cancel an appointment
-PUT {{baseUrl}}/api/appointments/{{appointmentId}}/cancel
-
-###
-
-### Complete an appointment
-PUT {{baseUrl}}/api/appointments/{{appointmentId}}/complete
+{
+  "newPurpose": "Follow-up Consultation"
+}
 
 ###
 
